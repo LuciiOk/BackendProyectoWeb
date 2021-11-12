@@ -1,0 +1,39 @@
+{
+  "name": "proyecto-web",
+  "version": "1.0.0",
+  "description": "trivia salud",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./js/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuciiOk/proyectoweb.git"
+  },
+  "keywords": [
+    "proyecto",
+    "web",
+    "salud"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuciiOk/proyectoweb/issues"
+  },
+  "homepage": "https://github.com/LuciiOk/proyectoweb#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.7",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.16.4",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.1"
+  }
+}
