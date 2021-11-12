@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app = require('express');
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db_config');
+const jwt = require('jsonwebtoken');
 const router = app.Router();
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { user, email, pass, pass2, genero, fechaNacimiento } = req.body;
@@ -43,7 +44,14 @@ router.post('/login', (req, res) => {
         let validPass = yield bcrypt.compare(pass, result.rows[0].password);
         if (!validPass)
             return res.status(401).send({ message: "usuario o contrasena incorrecta" });
-        return res.status(200).send({ message: "success" });
+        jwt.sign({ email }, 'secreKey', (err, token) => {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                token
+            });
+        });
     }));
 });
 module.exports = router;

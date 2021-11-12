@@ -1,8 +1,8 @@
 const app = require('express');
 const bcrypt = require('bcrypt');
-const { pool } = require('../config/db_config')
+const { pool } = require('../config/db_config');
+const jwt = require('jsonwebtoken');
 const router = app.Router();
-
 
 router.post('/register', async (req:any, res:any)  => {
     let { user, email, pass, pass2 , genero, fechaNacimiento} = req.body;
@@ -43,7 +43,15 @@ router.post('/login', (req:any, res:any) => {
 
         if (!validPass) 
             return res.status(401).send({message: "usuario o contrasena incorrecta"});
-        return res.status(200).send({message: "success"})
+
+            jwt.sign({ email }, 'secreKey', (err:any, token:any) => {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    token
+                })
+            });
     });
 });
 
