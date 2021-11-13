@@ -26,7 +26,7 @@ router.post('/register', async (req:any, res:any)  => {
                     if (err) {
                         throw err;
                     }
-                    res.send("Usuario creado con exito.");
+                    res.status(200).send("Usuario creado con exito.");
                 })
             }
         }

@@ -31,7 +31,7 @@ router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, functio
                 if (err) {
                     throw err;
                 }
-                res.send("Usuario creado con exito.");
+                res.status(200).send("Usuario creado con exito.");
             });
         }
     });

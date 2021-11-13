@@ -27,7 +27,8 @@ router.post('/', (req:any, res:any) => {
         if (err) {
             res.status(400).send({message: err});
         }
-        res.status(201).send({message: 'El amigo ha sido creado con exito.'});
+        res.status(201)
+            .send({message: 'El amigo ha sido creado con exito.'});
     });
 });
 
@@ -35,14 +36,17 @@ router.post('/', (req:any, res:any) => {
 router.delete('/', (req:any, res:any) => {
     const data = req.body;
 
-    pool.query(``,
+    pool.query(`DELETE FROM amigos 
+        WHERE amigos.id_amigo = $1 AND amigos.id_usuario = $2
+    `,[data.id_amigo, data.id_usuario],
     (err:any, result:any)=>{
         if (err) {
             res.status(400).send({message: err});
         }
-        res.status(202).send({message: 'El amigo ha sido eliminado'});
+        res.status(202).send({message: 'El amigo ha sido eliminado con exito'});
     });
 });
 
 export {};
 module.exports = router;
+    
