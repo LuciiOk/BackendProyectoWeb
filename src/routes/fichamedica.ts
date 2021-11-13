@@ -1,7 +1,7 @@
 const app = require('express');
 const router = app.Router();
 const { pool } = require('../config/db_config');
-const isAuthenticated = require('../auth/isAuth');
+const { isAuthenticated } = require('../auth/jwtHelper');
 
 router.get('/', isAuthenticated, (req:any, res:any) => {
     const { email } =  req.body;

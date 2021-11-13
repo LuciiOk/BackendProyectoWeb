@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app = require('express');
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db_config');
-const jwt = require('jsonwebtoken');
 const router = app.Router();
+const { signToken } = require('../auth/jwtHelper');
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { user, email, pass, pass2, genero, fechaNacimiento } = req.body;
     let hashedPass = yield bcrypt.hash(pass, 10);
@@ -39,19 +39,16 @@ router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, functio
 router.post('/login', (req, res) => {
     let { email, pass } = req.body;
     pool.query(`SELECT * FROM usuarios WHERE usuarios.email = $1`, [email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        // validar que el usuario exista
         if (result.rows.length === 0)
             return res.status(401).send({ message: "usuario o contrasena incorrecta" });
         let validPass = yield bcrypt.compare(pass, result.rows[0].password);
+        // validar contrasena
         if (!validPass)
             return res.status(401).send({ message: "usuario o contrasena incorrecta" });
-        jwt.sign({ email }, 'secreKey', (err, token) => {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                token
-            });
-        });
+        // generar jwt
+        let accessToken = signToken(result.rows[0]);
+        res.json(accessToken);
     }));
 });
 module.exports = router;
