@@ -16,6 +16,7 @@ router.post('/register', async (req:any, res:any)  => {
             if (err) {
                 throw err;
             }
+
             if (result.rows.length > 0) {
                 res.send('El email ya existe');
             } else {
@@ -46,7 +47,9 @@ router.post('/login', (req:any, res:any) => {
             return res.status(401).send({message: "usuario o contrasena incorrecta"});
         // generar jwt
         let accessToken = signToken(result.rows[0]);
-        res.json(accessToken);
+
+        res.header('authorization', 'Bearer ' + accessToken).
+            json(accessToken);
         
     });
 });

@@ -48,7 +48,8 @@ router.post('/login', (req, res) => {
             return res.status(401).send({ message: "usuario o contrasena incorrecta" });
         // generar jwt
         let accessToken = signToken(result.rows[0]);
-        res.json(accessToken);
+        res.header('authorization', 'Bearer ' + accessToken).
+            json(accessToken);
     }));
 });
 module.exports = router;
