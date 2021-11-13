@@ -4,26 +4,15 @@ const { pool } = require('../config/db_config');
 const isAuthenticated = require('../auth/isAuth');
 
 router.get('/', isAuthenticated, (req:any, res:any) => {
-    res.send('funciona');
-    // pool.query(
-    //     `SELECT * FROM informacionesmedicas`, (err:any, result:any) => {
-    //         if (err) {
-    //             throw err;
-    //         }
-    //         res.send(result);
-    //     }
-    // );
-});
-
-router.get('/:id', (req:any, res:any) => {
-    const { id } =  req.body;
+    const { email } =  req.body;
 
     pool.query(
-        `SELECT * FROM informacionesmedicas WHERE informacionesmedicas.id = $1`, [id] , (err:any, result:any) => {
+        `SELECT * FROM informacionesmedicas inner join usuarios
+         on email = $1`, [email] , (err:any, result:any) => {
             if (err) {
                 throw err;
             }
-            res.send(result);
+            res.send(result.rows);
         }
     );
 });

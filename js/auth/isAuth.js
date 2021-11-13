@@ -11,6 +11,8 @@ module.exports = (req, res, next) => {
             res.sendStatus(403);
         }
         else {
+            let { email } = decoded;
+            req.email = email;
             req.token = token;
             next();
         }

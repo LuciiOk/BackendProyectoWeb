@@ -12,6 +12,8 @@ module.exports = (req:any, res:any, next:any) => {
         if (err) {
             res.sendStatus(403);
         } else {
+            let { email } = decoded; 
+            req.email = email;
             req.token = token;
             next();
         }
