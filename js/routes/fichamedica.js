@@ -3,13 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app = require('express');
 const router = app.Router();
 const { pool } = require('../config/db_config');
-router.get('/', (req, res) => {
-    pool.query(`SELECT * FROM informacionesmedicas`, (err, result) => {
-        if (err) {
-            throw err;
-        }
-        res.send(result);
-    });
+const isAuthenticated = require('../auth/isAuth');
+router.get('/', isAuthenticated, (req, res) => {
+    res.send('funciona');
+    // pool.query(
+    //     `SELECT * FROM informacionesmedicas`, (err:any, result:any) => {
+    //         if (err) {
+    //             throw err;
+    //         }
+    //         res.send(result);
+    //     }
+    // );
 });
 router.get('/:id', (req, res) => {
     const { id } = req.body;
@@ -20,3 +24,4 @@ router.get('/:id', (req, res) => {
         res.send(result);
     });
 });
+module.exports = router;
