@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app = require('express');
+const app = require("express");
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db_config');
 const router = app.Router();
@@ -17,9 +17,8 @@ const { signToken } = require('../auth/jwtHelper');
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { user, email, pass, pass2, genero, fechaNacimiento } = req.body;
     let hashedPass = yield bcrypt.hash(pass, 10);
-    pool.query(`SELECT * FROM usuarios
-        WHERE email = $1
-        `, [email], (err, result) => {
+    pool.query(`SELECT * FROM usuarios WHERE email = $1
+    `, [email], (err, result) => {
         if (err) {
             throw err;
         }
@@ -48,8 +47,7 @@ router.post('/login', (req, res) => {
             return res.status(401).send({ message: "usuario o contrasena incorrecta" });
         // generar jwt
         let accessToken = signToken(result.rows[0]);
-        res.header('authorization', 'Bearer ' + accessToken).
-            json(accessToken);
+        res.header('authorization', 'Bearer ' + accessToken).json(accessToken);
     }));
 });
 module.exports = router;
