@@ -2,13 +2,29 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const app = require("express");
 const { pool } = require('../config/db_config');
+const { isAuthenticated } = require('../auth/jwtHelper');
 const router = app.Router();
 router.get('/', (req, res) => {
+    const { id } = req.body;
+    pool.query(`SELECT bailes.*, deportes.* FROM usuarios
+        inner join usuario_baile on usuario_baile.id_usuario = usuarios.id
+        inner join bailes on usuario_baile.id_baile = bailes.id_baile
+        inner join usuario_deporte on usuario_deporte.id_deporte = usuarios.id
+        inner join deportes on usuario_deporte.id_deporte = deportes.id_deporte
+        where usuarios.id = $1`, [id], (err, result) => {
+        if (err) {
+            res.status().send({ message: err });
+        }
+        res.status(200).send(result.rows);
+    });
 });
-router.post('/', (req, res) => {
+router.post('/', isAuthenticated, (req, res) => {
+    pool.query(``);
 });
-router.delete('/', (req, res) => {
+router.delete('/', isAuthenticated, (req, res) => {
+    pool.query(``);
 });
-router.put('/', (req, res) => {
+router.put('/', isAuthenticated, (req, res) => {
+    pool.query(``);
 });
 module.exports = router;
