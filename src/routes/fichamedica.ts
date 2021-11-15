@@ -7,7 +7,7 @@ router.get('/', isAuthenticated, (req:any, res:any) => {
     const { email } =  req.body;
 
     pool.query(
-        `SELECT * FROM informacionesmedicas inner join usuarios
+        `SELECT informacionesmedicas.* FROM informacionesmedicas inner join usuarios
          on email = $1`, [email] , (err:any, result:any) => {
             if (err) {
                 throw err;

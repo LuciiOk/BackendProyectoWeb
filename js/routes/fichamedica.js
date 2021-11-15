@@ -6,7 +6,7 @@ const { pool } = require('../config/db_config');
 const { isAuthenticated } = require('../auth/jwtHelper');
 router.get('/', isAuthenticated, (req, res) => {
     const { email } = req.body;
-    pool.query(`SELECT * FROM informacionesmedicas inner join usuarios
+    pool.query(`SELECT informacionesmedicas.* FROM informacionesmedicas inner join usuarios
          on email = $1`, [email], (err, result) => {
         if (err) {
             throw err;
