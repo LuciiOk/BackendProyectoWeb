@@ -16,7 +16,7 @@ function isAuthenticated(req, res, next) {
             res.sendStatus(403);
         }
         else {
-            req.user = user;
+            //req.user = user;
             next();
         }
     });

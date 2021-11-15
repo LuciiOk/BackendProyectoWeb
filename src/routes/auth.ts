@@ -5,7 +5,7 @@ const router = app.Router();
 const { signToken } = require('../auth/jwtHelper')
 
 router.post('/register', async (req:any, res:any)  => {
-    let { user, email, pass, pass2 , genero, fechaNacimiento} = req.body;
+    let { user, email, pass, pass2 , genero, fechaNacimiento } = req.body;
 
     let hashedPass = await bcrypt.hash(pass, 10)
 

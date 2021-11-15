@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const app = require("express");
 const { pool } = require('../config/db_config');
+const { isAuthenticated } = require('../auth/jwtHelper');
 const router = app.Router();
 // Aqui se obtiene la lista de amigos que tiene un usuario
-router.get('/', (req, res) => {
+router.get('/', isAuthenticated, (req, res) => {
     const { id } = req.body;
     pool.query(`SELECT amigos.nombre as amigo FROM amigos
         inner join usuarios on amigos.id_usuario = usuarios.id
@@ -17,7 +18,7 @@ router.get('/', (req, res) => {
     });
 });
 // Aqui se agrega un nuevo amigo
-router.post('/', (req, res) => {
+router.post('/', isAuthenticated, (req, res) => {
     const { id, nombre } = req.body;
     pool.query(`INSERT INTO amigos(id_usuario, nombre)
         VALUES($1, $2) `, [id, nombre], (err, result) => {
@@ -29,7 +30,7 @@ router.post('/', (req, res) => {
     });
 });
 // Eliminacion de un amigo 
-router.delete('/', (req, res) => {
+router.delete('/', isAuthenticated, (req, res) => {
     const { id_amigo, id_usuario } = req.body;
     pool.query(`DELETE FROM amigos 
         WHERE amigos.id_amigo = $1 AND amigos.id_usuario = $2`, [id_amigo, id_usuario], (err, result) => {

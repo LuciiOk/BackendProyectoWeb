@@ -22,4 +22,4 @@ app.listen(config, () => {
     console.log(`Servidor corriendo en http://${config.hostname}:${config.port}`);
 });
 
-export {}
+export {};

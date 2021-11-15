@@ -8,7 +8,6 @@ function signToken({id, nombre, email}:any) {
     return accessToken;
 }
 
-
 function isAuthenticated(req:any, res:any, next:any) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -21,7 +20,7 @@ function isAuthenticated(req:any, res:any, next:any) {
         if (err) {
             res.sendStatus(403);
         } else {
-            req.user = user;
+            //req.user = user;
             next();
         }
     })
