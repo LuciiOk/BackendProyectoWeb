@@ -10,6 +10,7 @@ const auth = require('./routes/auth');
 const friends = require('./routes/friends');
 const fichas = require('./routes/fichamedica');
 const preferencias = require('./routes/preferencias');
+const user = require('./routes/user');
 
 
 // .env
@@ -27,6 +28,8 @@ app.use('/auth', auth);
 app.use('/fichas', fichas);
 app.use('/amigos', friends);
 app.use('/preferencias', preferencias);
+app.use('/user', user);
+
 
 // server
 app.listen(config, () => {

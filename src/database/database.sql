@@ -1,8 +1,6 @@
-create database triviasalud;
-
 create table informacionesmedicas (
 	id serial primary key,
-	estatura decimal,
+	estatura decimal not null,
 	enfermedad varchar(60),
 	enfermedadRespiratoria varchar(60),
 	cirugia varchar(50),
@@ -28,5 +26,7 @@ create table amigos (
 	
 	foreign key (id_usuario) references usuarios(id)
 );
+
+alter table informacionesmedicas add 
 
 SELECT * FROM USUARIOs;

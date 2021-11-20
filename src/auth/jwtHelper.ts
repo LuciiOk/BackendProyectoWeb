@@ -20,7 +20,8 @@ function isAuthenticated(req:any, res:any, next:any) {
         if (err) {
             res.sendStatus(403);
         } else {
-            //req.user = user;
+            console.log('dfdsf')
+            req.user = user
             next();
         }
     })

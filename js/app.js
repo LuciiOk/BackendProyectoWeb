@@ -10,6 +10,7 @@ const auth = require('./routes/auth');
 const friends = require('./routes/friends');
 const fichas = require('./routes/fichamedica');
 const preferencias = require('./routes/preferencias');
+const user = require('./routes/user');
 // .env
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ app.use('/auth', auth);
 app.use('/fichas', fichas);
 app.use('/amigos', friends);
 app.use('/preferencias', preferencias);
+app.use('/user', user);
 // server
 app.listen(config, () => {
     console.log(`Servidor corriendo en http://${config.hostname}:${config.port}`);

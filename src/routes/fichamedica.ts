@@ -3,17 +3,17 @@ const router = app.Router();
 const { pool } = require('../config/db_config');
 const { isAuthenticated } = require('../auth/jwtHelper');
 
-router.get('/', isAuthenticated, (req:any, res:any) => {
-    const { id } =  req.body;
+router.get('/:id', isAuthenticated, (req:any, res:any) => {
+    const { id } =  req.params;
 
     pool.query(
         `SELECT informacionesmedicas.* FROM informacionesmedicas 
          JOIN usuarios ON informacionesmedicas.id = usuarios.informacionmedica
          WHERE usuarios.id = $1`, [ id ] , (err:any, result:any) => {
             if (err) {
-                throw err;
+                res.send(400).send({message: 'usuario no encontrado'})
             }
-            res.send(result.rows[0]);
+            res.status(200).send(result.rows[0]);
         }
     );
 });

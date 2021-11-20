@@ -2,29 +2,30 @@ import app = require('express');
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db_config');
 const router = app.Router();
+const jwt = require('jsonwebtoken');
 const { signToken } = require('../auth/jwtHelper')
 
 router.post('/register', async (req:any, res:any)  => {
-    let { user, email, pass, pass2 , genero, fechaNacimiento } = req.body;
+    let { nombre, email, password, sexo, nacimiento } = req.body;
 
-    let hashedPass = await bcrypt.hash(pass, 10)
+    let hashedPass = await bcrypt.hash(password, 10);
 
     pool.query(`SELECT * FROM usuarios WHERE email = $1
     `, [email], (err:any, result:any) => {
         if (err) {
-            throw err;
+            res.status(400).send({messagge: 'error'})
         }
 
         if (result.rows.length > 0) {
-            res.send('El email ya existe');
+            res.status(400).send({message: 'El email ya existe'});
         } else {
             pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING id, password`, 
-            [user, email, hashedPass, genero, fechaNacimiento],
+            [nombre, email, hashedPass, sexo, nacimiento],
             (err:any, result:any) => {
                 if (err) {
-                    throw err;
+                    res.status(400).send({messagge: 'error'})
                 }
-                res.status(200).send("Usuario creado con exito.");
+                res.status(200).send({message: 'Usuario creado con exito.'});
             })
         }
     });
@@ -44,10 +45,14 @@ router.post('/login', (req:any, res:any) => {
             return res.status(401).send({message: "usuario o contrasena incorrecta"});
         // generar jwt
         let accessToken = signToken(result.rows[0]);
-
-        res.header('authorization', 'Bearer ' + accessToken).json(accessToken);
+        
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err:any, data:any) =>{
+            res.header('authorization', 'Bearer ' + accessToken).send({token: accessToken, user: data});
+        });
     });
 });
+
+
 
 export{};
 module.exports = router;
