@@ -4,6 +4,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const morgan = require('morgan');
 const { config } = require('./config/config');
 // import de las rutas
 const auth = require('./routes/auth');
@@ -15,6 +16,7 @@ const user = require('./routes/user');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 // configuracion de app
+app.use(morgan('dev'));
 app.use(bodyparser.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));

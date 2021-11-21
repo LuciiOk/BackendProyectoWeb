@@ -27,6 +27,8 @@ create table amigos (
 	foreign key (id_usuario) references usuarios(id)
 );
 
-alter table informacionesmedicas add 
+alter table informacionesmedicas add peso int;
 
-SELECT * FROM USUARIOs;
+
+update informacionesmedicas set peso = 73
+where id = 1

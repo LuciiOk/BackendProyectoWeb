@@ -6,7 +6,9 @@ const jwt = require('jsonwebtoken');
 const { signToken } = require('../auth/jwtHelper')
 
 router.post('/register', async (req:any, res:any)  => {
-    let { nombre, email, password, sexo, nacimiento } = req.body;
+    let { nombre, email, password, genero, fechanacimiento } = req.body;
+
+    console.log(nombre, email, password, genero, fechanacimiento)
 
     let hashedPass = await bcrypt.hash(password, 10);
 
@@ -20,7 +22,7 @@ router.post('/register', async (req:any, res:any)  => {
             res.status(400).send({message: 'El email ya existe'});
         } else {
             pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING id, password`, 
-            [nombre, email, hashedPass, sexo, nacimiento],
+            [nombre, email, hashedPass, genero, fechanacimiento],
             (err:any, result:any) => {
                 if (err) {
                     res.status(400).send({messagge: 'error'})

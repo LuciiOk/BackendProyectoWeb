@@ -16,7 +16,8 @@ const router = app.Router();
 const jwt = require('jsonwebtoken');
 const { signToken } = require('../auth/jwtHelper');
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { nombre, email, password, sexo, nacimiento } = req.body;
+    let { nombre, email, password, genero, fechanacimiento } = req.body;
+    console.log(nombre, email, password, genero, fechanacimiento);
     let hashedPass = yield bcrypt.hash(password, 10);
     pool.query(`SELECT * FROM usuarios WHERE email = $1
     `, [email], (err, result) => {
@@ -27,7 +28,7 @@ router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.status(400).send({ message: 'El email ya existe' });
         }
         else {
-            pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING id, password`, [nombre, email, hashedPass, sexo, nacimiento], (err, result) => {
+            pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING id, password`, [nombre, email, hashedPass, genero, fechanacimiento], (err, result) => {
                 if (err) {
                     res.status(400).send({ messagge: 'error' });
                 }
