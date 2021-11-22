@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 function signToken({id, nombre, email}:any) {
     const user = {id, nombre, email};
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: 60
-    }); // aqui se genera un token 
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET); // aqui se genera un token 
 
     return accessToken;
 }
