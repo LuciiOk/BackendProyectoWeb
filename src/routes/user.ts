@@ -11,7 +11,18 @@ routes.get('/:id', isAuthenticated,(req:any, res:any) => {
         if (err) {
             res.status(400).send({message: 'usuario no encontrado'});
         }
-        res.status(200).send(result.rows)
+        res.status(200).send(result.rows);
+    })
+});
+
+routes.delete('/:id', isAuthenticated,(req:any, res:any) => {
+    const { id } = req.params;
+    
+    pool.query(`DELETE FROM usuarios WHERE id = $1`, [id], (err:any, result:any) => {
+        if (err) {
+            res.status(400).send({message: 'usuario no encontrado'});
+        }
+        res.status(200).send({message: 'usuario eliminado'})
     })
 });
 
