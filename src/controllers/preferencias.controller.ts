@@ -8,6 +8,7 @@ export const getPreferencias = async (req:Request, res:Response):Promise<Respons
     try {   
         const result:QueryResult = await pool.query(`SELECT gustos.* FROM usuarios INNER JOIN gustos on usuarios.gustos = gustos.id_gustos
         WHERE usuarios.id = $1`, [id]);
+        console.log(result);
         return res.status(201).send(result.rows[0])
     } catch (error) {
         return res.status(500).send({message: error})
@@ -28,6 +29,7 @@ export const deletePreferencia = async (req:Request, res:Response):Promise<Respo
             if (result2.rowCount > 0) {
                 return res.status(200).send({message: 'Usuario Eliminado.'});
             }
+            return res.send({message: 'gusto no eliminado'})
         }
         return res.status(200).send({message: 'Usuario no encontrado.'})
     } catch (error) {

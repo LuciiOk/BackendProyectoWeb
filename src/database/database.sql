@@ -31,8 +31,8 @@ create table usuarios (
 	informacionmedica int unique,
 	gustos int,
 	
-	foreign key (informacionmedica) references informacionesmedicas(id) on update cascade on delete cascade,
-	foreign key (gustos) references gustos(id_gustos) on update cascade on delete cascade
+	foreign key (informacionmedica) references informacionesmedicas(id) on update cascade on delete set null,
+	foreign key (gustos) references gustos(id_gustos) on update cascade on delete set null
 );
 
 drop table if exists amigos cascade;

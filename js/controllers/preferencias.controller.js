@@ -16,6 +16,7 @@ const getPreferencias = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const result = yield db_config_1.pool.query(`SELECT gustos.* FROM usuarios INNER JOIN gustos on usuarios.gustos = gustos.id_gustos
         WHERE usuarios.id = $1`, [id]);
+        console.log(result);
         return res.status(201).send(result.rows[0]);
     }
     catch (error) {
@@ -33,6 +34,7 @@ const deletePreferencia = (req, res) => __awaiter(void 0, void 0, void 0, functi
             if (result2.rowCount > 0) {
                 return res.status(200).send({ message: 'Usuario Eliminado.' });
             }
+            return res.send({ message: 'gusto no eliminado' });
         }
         return res.status(200).send({ message: 'Usuario no encontrado.' });
     }
