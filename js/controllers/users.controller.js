@@ -26,7 +26,6 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { id } = req.params;
     try {
         const result = yield db_config_1.pool.query(`DELETE FROM usuarios WHERE id = $1`, [id]);
-        console.log(result);
         return res.status(202).send({ message: 'El usuario ha sido eliminado con exito.' });
     }
     catch (error) {

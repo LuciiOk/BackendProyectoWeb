@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPreferencias = void 0;
+exports.deletePreferencia = exports.getPreferencias = void 0;
 const db_config_1 = require("../config/db_config");
 const getPreferencias = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
@@ -23,3 +23,21 @@ const getPreferencias = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getPreferencias = getPreferencias;
+const deletePreferencia = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        let result = yield db_config_1.pool.query(`SELECT gustos FROM usuarios WHERE id = $1`, [id]);
+        if (result.rowCount > 0) {
+            let gustos = result.rows[0].gustos;
+            let result2 = yield db_config_1.pool.query(`DELETE FROM gustos WHERE id_gustos = $1`, [gustos]);
+            if (result2.rowCount > 0) {
+                return res.status(200).send({ message: 'Usuario Eliminado.' });
+            }
+        }
+        return res.status(200).send({ message: 'Usuario no encontrado.' });
+    }
+    catch (error) {
+        return res.status(500).send({ message: error });
+    }
+});
+exports.deletePreferencia = deletePreferencia;
