@@ -1,23 +1,21 @@
-const express = require('express');
-const bodyparser = require('body-parser');
-const cors = require('cors');
+import express from 'express'
+import bodyparser from 'body-parser'
+import cors from 'cors'
+import morgan from 'morgan'
 const app = express();
-const morgan = require('morgan');
+
 
 const { config } = require('./config/config');
 
 // import de las rutas
-const auth = require('./routes/auth');
-const friends = require('./routes/friends');
-const fichas = require('./routes/fichamedica');
-const preferencias = require('./routes/preferencias');
-const user = require('./routes/user');
-
+import auth from './routes/auth';
+import friends  from './routes/friends';
+import user from './routes/user';
+import preferencias from './routes/preferencias';
+import fichas from './routes/fichamedica';
 
 // .env
 require('dotenv').config();
-
-const PORT =  process.env.PORT || 3000;
 
 // configuracion de app
 app.use(morgan('dev'))

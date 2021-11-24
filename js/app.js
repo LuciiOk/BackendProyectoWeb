@@ -1,31 +1,33 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require('express');
-const bodyparser = require('body-parser');
-const cors = require('cors');
-const app = express();
-const morgan = require('morgan');
+const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
+const morgan_1 = __importDefault(require("morgan"));
+const app = (0, express_1.default)();
 const { config } = require('./config/config');
 // import de las rutas
-const auth = require('./routes/auth');
-const friends = require('./routes/friends');
-const fichas = require('./routes/fichamedica');
-const preferencias = require('./routes/preferencias');
-const user = require('./routes/user');
+const auth_1 = __importDefault(require("./routes/auth"));
+const friends_1 = __importDefault(require("./routes/friends"));
+const user_1 = __importDefault(require("./routes/user"));
+const preferencias_1 = __importDefault(require("./routes/preferencias"));
+const fichamedica_1 = __importDefault(require("./routes/fichamedica"));
 // .env
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
 // configuracion de app
-app.use(morgan('dev'));
-app.use(bodyparser.json());
-app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+app.use((0, morgan_1.default)('dev'));
+app.use(body_parser_1.default.json());
+app.use((0, cors_1.default)());
+app.use(express_1.default.urlencoded({ extended: false }));
 // declaracion de las rutas a utilizar
-app.use('/auth', auth);
-app.use('/fichas', fichas);
-app.use('/amigos', friends);
-app.use('/preferencias', preferencias);
-app.use('/user', user);
+app.use('/auth', auth_1.default);
+app.use('/fichas', fichamedica_1.default);
+app.use('/amigos', friends_1.default);
+app.use('/preferencias', preferencias_1.default);
+app.use('/user', user_1.default);
 // server
 app.listen(config, () => {
     console.log(`Servidor corriendo en http://${config.hostname}:${config.port}`);

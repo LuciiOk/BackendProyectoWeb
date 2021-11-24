@@ -1,22 +1,10 @@
-import app = require('express');
-const router = app.Router();
+import { Router } from "express";
+const router = Router();
 const { pool } = require('../config/db_config');
-const { isAuthenticated } = require('../auth/jwtHelper');
+import {isAuthenticated} from '../auth/jwtHelper';
+import { getFichas } from "../controllers/fichas.controller";
 
-router.get('/:id', isAuthenticated, (req:any, res:any) => {
-    const { id } =  req.params;
-
-    pool.query(
-        `SELECT informacionesmedicas.* FROM informacionesmedicas 
-         JOIN usuarios ON informacionesmedicas.id = usuarios.informacionmedica
-         WHERE usuarios.id = $1`, [ id ] , (err:any, result:any) => {
-            if (err) {
-                res.send(400).send({message: 'usuario no encontrado'})
-            }
-            res.status(200).send(result.rows[0]);
-        }
-    );
-});
+router.get('/:id', isAuthenticated, getFichas);
 
 router.post('/:id', (req:any, res:any) => {
     const { estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa } =  req.body;
@@ -66,6 +54,27 @@ router.put('/:id', isAuthenticated, (req:any, res:any) => {
     });
 });
 
-export {}
-module.exports = router;
+router.delete('/:id',isAuthenticated, (req:any, res:any) => {
+    let { id } = req.params
+
+    pool.query(`SELECT informacionmedica FROM usuarios where id = $1`, [id], (err:any, result:any) => {
+        if (err) {
+            if (err) {
+                res.status(400).send({message: 'ha ocurrido un error'});
+            }
+        }   
+    
+        let infoM = result.rows[0].informacionmedica
+        console.log();
+        pool.query(`DELETE FROM informacionesmedicas WHERE id = $1`, [parseInt(infoM)], (err:any, result:any) => {
+            if (err) {
+                res.status(400).send({message: 'ha ocurrido un error'});
+            }
+            res.status(202).send({message: 'La informacion medica se han eliminado con exito'})
+        })
+    });
+
+});
+
+export default router;
 

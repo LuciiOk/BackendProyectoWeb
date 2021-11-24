@@ -1,43 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const app = require("express");
-const { pool } = require('../config/db_config');
-const { isAuthenticated } = require('../auth/jwtHelper');
-const router = app.Router();
+const express_1 = require("express");
+const amigos_controller_1 = require("../controllers/amigos.controller");
+const jwtHelper_1 = require("../auth/jwtHelper");
+const router = (0, express_1.Router)();
 // Aqui se obtiene la lista de amigos que tiene un usuario
-router.get('/', isAuthenticated, (req, res) => {
-    const { id } = req.body;
-    pool.query(`SELECT amigos.nombre as amigo FROM amigos
-        inner join usuarios on amigos.id_usuario = usuarios.id
-        WHERE usuarios.id = $1`, [id], (err, result) => {
-        if (err) {
-            res.status(400).send({ message: err });
-        }
-        res.status(200)
-            .send(JSON.parse(JSON.stringify(result.rows)));
-    });
-});
+router.get('/:id', jwtHelper_1.isAuthenticated, amigos_controller_1.getAmigos);
 // Aqui se agrega un nuevo amigo
-router.post('/', isAuthenticated, (req, res) => {
-    const { id, nombre } = req.body;
-    pool.query(`INSERT INTO amigos(id_usuario, nombre)
-        VALUES($1, $2) `, [id, nombre], (err, result) => {
-        if (err) {
-            res.status(400).send({ message: err });
-        }
-        res.status(201)
-            .send({ message: 'El amigo ha sido creado con exito.' });
-    });
-});
+router.post('/', jwtHelper_1.isAuthenticated, amigos_controller_1.addAmigo);
 // Eliminacion de un amigo 
-router.delete('/', isAuthenticated, (req, res) => {
-    const { id_amigo, id_usuario } = req.body;
-    pool.query(`DELETE FROM amigos 
-        WHERE amigos.id_amigo = $1 AND amigos.id_usuario = $2`, [id_amigo, id_usuario], (err, result) => {
-        if (err) {
-            res.status(400).send({ message: err });
-        }
-        res.status(202).send({ message: 'El amigo ha sido eliminado con exito' });
-    });
-});
-module.exports = router;
+router.delete('/:id_amigo/:id_usuario', jwtHelper_1.isAuthenticated, amigos_controller_1.deleteAmigo);
+exports.default = router;

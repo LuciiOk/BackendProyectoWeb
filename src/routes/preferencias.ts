@@ -1,32 +1,18 @@
-import app = require('express');
-const { pool } = require('../config/db_config');
-const { isAuthenticated } =  require('../auth/jwtHelper')
-const router = app.Router();
+import {Router} from 'express'
+import { getPreferencias } from '../controllers/preferencias.controller';
+import { isAuthenticated } from '../auth/jwtHelper';
+const routes = Router();
 
-router.get('/:id', (req:any, res:any) => {
-    const { id } = req.params;
+routes.get('/:id', isAuthenticated, getPreferencias);
 
-    pool.query(`SELECT gustos.* FROM usuarios
-        INNER JOIN gustos on usuarios.gustos = gustos.id_gustos
-        where usuarios.id = $1`, [id], (err:any, result:any) => {
-        if (err) {
-            res.status().send({message: err})
-        }
-        res.status(200).send(result.rows[0])
-    });
+routes.post('/', isAuthenticated, (req:any, res:any) => {
+
 });
 
-router.post('/',isAuthenticated, (req:any, res:any) => {
-    pool.query(``,)
+routes.delete('/:id', isAuthenticated, );
+
+routes.put('/', isAuthenticated, (req:any, res:any) => {
+
 });
 
-router.delete('/',isAuthenticated, (req:any, res:any) => {
-    pool.query(``,)
-});
-
-router.put('/',isAuthenticated, (req:any, res:any) => {
-    pool.query(``,)
-});
-
-export {};
-module.exports = router;
+export default routes;

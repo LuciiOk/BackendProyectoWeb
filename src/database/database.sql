@@ -31,20 +31,18 @@ create table usuarios (
 	informacionmedica int unique,
 	gustos int,
 	
-	foreign key (informacionmedica) references informacionesmedicas(id),
-	foreign key (gustos) references gustos(id_gustos)
+	foreign key (informacionmedica) references informacionesmedicas(id) on update cascade on delete cascade,
+	foreign key (gustos) references gustos(id_gustos) on update cascade on delete cascade
 );
 
 drop table if exists amigos cascade;
 create table amigos (
+	id_amigo serial primary key,
 	id_usuario int,
 	nombre varchar(40),
+	genero varchar(10),
 	
 	foreign key (id_usuario) references usuarios(id)
 );
 
 alter table informacionesmedicas add peso int;
-
-
-select * from informacionesmedicas;
-select * from usuarios;

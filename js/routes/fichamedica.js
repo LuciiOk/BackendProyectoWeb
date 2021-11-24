@@ -1,20 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const app = require("express");
-const router = app.Router();
+const express_1 = require("express");
+const router = (0, express_1.Router)();
 const { pool } = require('../config/db_config');
-const { isAuthenticated } = require('../auth/jwtHelper');
-router.get('/:id', isAuthenticated, (req, res) => {
-    const { id } = req.params;
-    pool.query(`SELECT informacionesmedicas.* FROM informacionesmedicas 
-         JOIN usuarios ON informacionesmedicas.id = usuarios.informacionmedica
-         WHERE usuarios.id = $1`, [id], (err, result) => {
-        if (err) {
-            res.send(400).send({ message: 'usuario no encontrado' });
-        }
-        res.status(200).send(result.rows[0]);
-    });
-});
+const jwtHelper_1 = require("../auth/jwtHelper");
+const fichas_controller_1 = require("../controllers/fichas.controller");
+router.get('/:id', jwtHelper_1.isAuthenticated, fichas_controller_1.getFichas);
 router.post('/:id', (req, res) => {
     const { estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa } = req.body;
     pool.query(`INSERT INTO informacionesmedicas(estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedaddegenerativa)
@@ -33,7 +24,7 @@ router.post('/:id', (req, res) => {
         });
     });
 });
-router.put('/:id', isAuthenticated, (req, res) => {
+router.put('/:id', jwtHelper_1.isAuthenticated, (req, res) => {
     const { estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa } = req.body;
     pool.query(`SELECT * FROM usuarios WHERE usuarios.id = $1`, [req.params.id], (err, result) => {
         if (err) {
@@ -53,4 +44,22 @@ router.put('/:id', isAuthenticated, (req, res) => {
         });
     });
 });
-module.exports = router;
+router.delete('/:id', jwtHelper_1.isAuthenticated, (req, res) => {
+    let { id } = req.params;
+    pool.query(`SELECT informacionmedica FROM usuarios where id = $1`, [id], (err, result) => {
+        if (err) {
+            if (err) {
+                res.status(400).send({ message: 'ha ocurrido un error' });
+            }
+        }
+        let infoM = result.rows[0].informacionmedica;
+        console.log();
+        pool.query(`DELETE FROM informacionesmedicas WHERE id = $1`, [parseInt(infoM)], (err, result) => {
+            if (err) {
+                res.status(400).send({ message: 'ha ocurrido un error' });
+            }
+            res.status(202).send({ message: 'La informacion medica se han eliminado con exito' });
+        });
+    });
+});
+exports.default = router;

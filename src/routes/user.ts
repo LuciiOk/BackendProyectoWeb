@@ -1,19 +1,10 @@
-const app = require('express');
+import {Router} from 'express'
+import { deleteUser, getUser } from '../controllers/users.controller';
 const { isAuthenticated } = require('../auth/jwtHelper')
-const { pool } = require('../config/db_config');
-const routes = app.Router();
+const routes = Router();
 
-routes.get('/:id', isAuthenticated,(req:any, res:any) => {
-    const { id } = req.params;
+routes.get('/:id', isAuthenticated, getUser);
 
-    pool.query(`SELECT id, nombre, email, genero, fechanacimiento, informacionmedica 
-    FROM usuarios WHERE id = $1`, [id], (err:any, result:any) => {
-        if (err) {
-            res.status(400).send({message: 'usuario no encontrado'});
-        }
-        res.status(200).send(result.rows)
-    })
-});
+routes.delete('/:id', isAuthenticated, deleteUser);
 
-export {}
-module.exports = routes;
+export default routes;

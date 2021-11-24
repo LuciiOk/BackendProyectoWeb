@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function signToken({id, nombre, email}:any) {
+export function signToken({id, nombre, email}:any) {
     const user = {id, nombre, email};
 
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET); // aqui se genera un token 
@@ -8,7 +8,7 @@ function signToken({id, nombre, email}:any) {
     return accessToken;
 }
 
-function isAuthenticated(req:any, res:any, next:any) {
+export function isAuthenticated(req:any, res:any, next:any) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -26,4 +26,4 @@ function isAuthenticated(req:any, res:any, next:any) {
     })
 };
 
-module.exports = {signToken, isAuthenticated}
+// export default { signToken, isAuthenticated }
