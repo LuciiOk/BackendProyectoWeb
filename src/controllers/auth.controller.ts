@@ -4,9 +4,8 @@ import  jsonwebtoken  from 'jsonwebtoken';
 import { QueryResult } from 'pg';
 import { Request, Response } from 'express';
 const jwt = jsonwebtoken;
-const { signToken } = require('../auth/jwtHelper');
+import { signToken } from '../auth/jwtHelper';
 require('dotenv').config();
-
 
 export const registrar = async (req:Request, res:Response):Promise<Response>  => {
     let { nombre, email, password, genero, fechanacimiento, infoMedica, gustos} = req.body;
@@ -18,18 +17,18 @@ export const registrar = async (req:Request, res:Response):Promise<Response>  =>
 
         const result:QueryResult = await pool.query(`SELECT * FROM usuarios WHERE email = $1`, [email]);
         if (result.rowCount === 0 ) {
-            const result2:QueryResult = await pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento) VALUES($1,$2,$3,$4,$5)
-            RETURNING id`, [nombre, email, hashedPass, genero, fechanacimiento]);
+            const result2:QueryResult = await pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento)
+             VALUES($1,$2,$3,$4,$5) RETURNING id`, [nombre, email, hashedPass, genero, fechanacimiento]);
 
             let idUsuario = parseInt(result2.rows[0].id);
             
             let infM:QueryResult = await pool.query(`INSERT INTO informacionesmedicas(estatura, peso, enfCardiaca, alergia, enfRespiratorias, cirugia, enfDegenerativa)
-            values($1,$2,$3,$4,$5,$6,$7) RETURNING id`, [estatura, parseInt(peso), enfcardiaca, alergia, enfrespiratorias, cirugia, enfdegenerativa]);
+             values($1,$2,$3,$4,$5,$6,$7) RETURNING id`, [estatura, parseInt(peso), enfcardiaca, alergia, enfrespiratorias, cirugia, enfdegenerativa]);
 
             let idF = infM.rows[0].id;
 
-            let gustosResult:QueryResult = await pool.query(`INSERT INTO gustos(folklor, salsa, zumba, futbol, basket, voley) values($1,$2,$3,$4,$5,$6) RETURNING id_gustos`, 
-            [folklor, salsa, zumba, futbol, basket, voley]);
+            let gustosResult:QueryResult = await pool.query(`INSERT INTO gustos(folklor, salsa, zumba, futbol, basket, voley) 
+             values($1,$2,$3,$4,$5,$6) RETURNING id_gustos`, [folklor, salsa, zumba, futbol, basket, voley]);
 
             let idG = gustosResult.rows[0].id_gustos;
 

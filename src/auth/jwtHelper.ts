@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 export function signToken({id, nombre, email}:any) {
     const user = {id, nombre, email};
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET); // aqui se genera un token 
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET || 'un secreto'); // aqui se genera un token 
 
     return accessToken;
 }
@@ -16,7 +16,7 @@ export function isAuthenticated(req:any, res:any, next:any) {
         res.sendStatus(403);
     }
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err:any, user:any) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || 'un secreto', (err:any, user:any) => {
         if (err) {
             res.sendStatus(403);
         } else {
@@ -26,4 +26,9 @@ export function isAuthenticated(req:any, res:any, next:any) {
     })
 };
 
-// export default { signToken, isAuthenticated }
+export function decodeToken(bearerToken:string) {
+    if (bearerToken !== '') {  
+        let token = bearerToken.split(' ')[1];
+        return jwt.decode(token);
+    }
+}

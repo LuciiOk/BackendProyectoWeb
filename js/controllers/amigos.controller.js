@@ -26,7 +26,6 @@ const addAmigo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_usuario, nombre, genero } = req.body;
     try {
         const response = yield db_config_1.pool.query(`INSERT INTO amigos(id_usuario, nombre, genero) VALUES($1, $2, $3) `, [id_usuario, nombre, genero]);
-        console.log(response);
         return res.status(200).json({ message: 'El amigo ha sido agregado con exito' });
     }
     catch (error) {

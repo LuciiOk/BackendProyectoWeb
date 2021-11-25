@@ -1,6 +1,9 @@
 import { pool } from '../config/db_config'
 import {Request, Response} from 'express'
 import { QueryResult } from 'pg';
+import jwt from 'jsonwebtoken'
+import { decodeToken } from '../auth/jwtHelper';
+import { json } from 'stream/consumers';
 
 export const getAmigos = async (req:Request, res:Response):Promise<Response> => {
     const { id } = req.params;
@@ -17,7 +20,6 @@ export const addAmigo = async (req:Request, res:Response):Promise<Response> => {
 
     try {
         const response:QueryResult = await pool.query(`INSERT INTO amigos(id_usuario, nombre, genero) VALUES($1, $2, $3) `, [id_usuario, nombre, genero]);
-        console.log(response)
         return res.status(200).json({message: 'El amigo ha sido agregado con exito'});
     } catch (error) {
         return res.status(500).json({message: error});

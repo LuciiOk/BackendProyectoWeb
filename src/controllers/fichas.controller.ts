@@ -14,27 +14,6 @@ export const getFichas = async (req:Request, res:Response):Promise<Response> => 
     }
 }
 
-const postFichas = async (req:Request, res:Response) => {
-    const { estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa } =  req.body;
-
-    pool.query(`INSERT INTO informacionesmedicas(estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedaddegenerativa)
-        values($1,$2,$3,$4,$5,$6) RETURNING id`,
-    [estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa], (err:any, result:any) => {
-        if (err) {
-            res.status(400);
-        }
-        const id = result.rows[0].id;
-        console.log(id);
-        pool.query(`UPDATE usuarios set informacionmedica = $1
-            WHERE id = $2`, [id, req.params.id], (err:any, result:any) => {
-                if (err) {
-                    res.status(400)
-                }
-                res.status(201).send('creado');
-        });
-    });
-}
-
 export const deleteFicha = async (req:Request, res:Response):Promise<Response> => {
     let { id } = req.params
     console.log(id);

@@ -1,11 +1,9 @@
+import { config } from './config/config';
 import express from 'express'
 import bodyparser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 const app = express();
-
-
-const { config } = require('./config/config');
 
 // import de las rutas
 import auth from './routes/auth';
@@ -30,10 +28,7 @@ app.use('/amigos', friends);
 app.use('/preferencias', preferencias);
 app.use('/user', user);
 
-
 // server
 app.listen(config, () => {
     console.log(`Servidor corriendo en http://${config.hostname}:${config.port}`);
 });
-
-export {};

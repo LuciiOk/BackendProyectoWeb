@@ -14,9 +14,8 @@ const db_config_1 = require("../config/db_config");
 const getPreferencias = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const result = yield db_config_1.pool.query(`SELECT gustos.* FROM usuarios INNER JOIN gustos on usuarios.gustos = gustos.id_gustos
-        WHERE usuarios.id = $1`, [id]);
-        console.log(result);
+        const result = yield db_config_1.pool.query(`SELECT gustos.* FROM usuarios 
+        INNER JOIN gustos on usuarios.gustos = gustos.id_gustos WHERE usuarios.id = $1`, [id]);
         return res.status(201).send(result.rows[0]);
     }
     catch (error) {

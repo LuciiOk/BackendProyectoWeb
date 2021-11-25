@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = require("./config/config");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const app = (0, express_1.default)();
-const { config } = require('./config/config');
 // import de las rutas
 const auth_1 = __importDefault(require("./routes/auth"));
 const friends_1 = __importDefault(require("./routes/friends"));
@@ -29,6 +29,6 @@ app.use('/amigos', friends_1.default);
 app.use('/preferencias', preferencias_1.default);
 app.use('/user', user_1.default);
 // server
-app.listen(config, () => {
-    console.log(`Servidor corriendo en http://${config.hostname}:${config.port}`);
+app.listen(config_1.config, () => {
+    console.log(`Servidor corriendo en http://${config_1.config.hostname}:${config_1.config.port}`);
 });

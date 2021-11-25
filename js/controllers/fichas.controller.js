@@ -23,24 +23,6 @@ const getFichas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getFichas = getFichas;
-const postFichas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa } = req.body;
-    db_config_1.pool.query(`INSERT INTO informacionesmedicas(estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedaddegenerativa)
-        values($1,$2,$3,$4,$5,$6) RETURNING id`, [estatura, enfermedad, enfermedadrespiratoria, cirugia, alergia, enfermedadDegenerativa], (err, result) => {
-        if (err) {
-            res.status(400);
-        }
-        const id = result.rows[0].id;
-        console.log(id);
-        db_config_1.pool.query(`UPDATE usuarios set informacionmedica = $1
-            WHERE id = $2`, [id, req.params.id], (err, result) => {
-            if (err) {
-                res.status(400);
-            }
-            res.status(201).send('creado');
-        });
-    });
-});
 const deleteFicha = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { id } = req.params;
     console.log(id);
