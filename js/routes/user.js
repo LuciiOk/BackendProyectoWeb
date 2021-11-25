@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const users_controller_1 = require("../controllers/users.controller");
-const { isAuthenticated } = require('../auth/jwtHelper');
+const jwtHelper_1 = require("../auth/jwtHelper");
 const routes = (0, express_1.Router)();
-routes.get('/:id', isAuthenticated, users_controller_1.getUser);
-routes.delete('/:id', isAuthenticated, users_controller_1.deleteUser);
+routes.get('/:id', jwtHelper_1.isAuthenticated, users_controller_1.getUser);
+routes.delete('/:id', jwtHelper_1.isAuthenticated, users_controller_1.deleteUser);
+routes.put('/:id', jwtHelper_1.isAuthenticated, users_controller_1.updateUser);
 exports.default = routes;
