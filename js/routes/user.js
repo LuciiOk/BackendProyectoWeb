@@ -6,5 +6,5 @@ const jwtHelper_1 = require("../auth/jwtHelper");
 const routes = (0, express_1.Router)();
 routes.get('/:id', jwtHelper_1.isAuthenticated, users_controller_1.getUser);
 routes.delete('/:id', jwtHelper_1.isAuthenticated, users_controller_1.deleteUser);
-routes.put('/:id', jwtHelper_1.isAuthenticated, users_controller_1.updateUser);
+routes.put('/:id', users_controller_1.updateUser);
 exports.default = routes;

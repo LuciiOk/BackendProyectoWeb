@@ -16,6 +16,7 @@ export const registrar = async (req:Request, res:Response):Promise<Response>  =>
         let hashedPass = await bcrypt.hash(password, 10);
 
         const result:QueryResult = await pool.query(`SELECT * FROM usuarios WHERE email = $1`, [email]);
+        console.log(result)
         if (result.rowCount === 0 ) {
             const result2:QueryResult = await pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento)
              VALUES($1,$2,$3,$4,$5) RETURNING id`, [nombre, email, hashedPass, genero, fechanacimiento]);
@@ -46,7 +47,6 @@ export const login = async (req:Request, res:Response):Promise<Response> => {
 
     try {
         const result: QueryResult = await pool.query(`SELECT * FROM usuarios WHERE usuarios.email = $1`, [email]);
-        
         if (result.rowCount !== 0) {
             let validPass = await bcrypt.compare(pass, result.rows[0].password);
 

@@ -1,9 +1,6 @@
 import { pool } from '../config/db_config'
 import {Request, Response} from 'express'
 import { QueryResult } from 'pg';
-import jwt from 'jsonwebtoken'
-import { decodeToken } from '../auth/jwtHelper';
-import { json } from 'stream/consumers';
 
 export const getAmigos = async (req:Request, res:Response):Promise<Response> => {
     const { id } = req.params;

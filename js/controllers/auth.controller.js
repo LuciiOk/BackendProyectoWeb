@@ -26,6 +26,7 @@ const registrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let hashedPass = yield bcrypt_1.default.hash(password, 10);
         const result = yield db_config_1.pool.query(`SELECT * FROM usuarios WHERE email = $1`, [email]);
+        console.log(result);
         if (result.rowCount === 0) {
             const result2 = yield db_config_1.pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento)
              VALUES($1,$2,$3,$4,$5) RETURNING id`, [nombre, email, hashedPass, genero, fechanacimiento]);

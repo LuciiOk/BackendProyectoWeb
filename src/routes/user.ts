@@ -7,6 +7,6 @@ routes.get('/:id', isAuthenticated, getUser);
 
 routes.delete('/:id', isAuthenticated, deleteUser);
 
-routes.put('/:id', isAuthenticated, updateUser)
+routes.put('/:id', updateUser)
 
 export default routes;

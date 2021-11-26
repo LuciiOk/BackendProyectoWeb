@@ -35,3 +35,26 @@ export const deletePreferencia = async (req:Request, res:Response):Promise<Respo
         return res.status(500).send({message: error});
     } 
 }
+
+export const updatePreferencia = async (req:Request, res:Response) => {
+    const { id } = req.params;
+    let { futbol, basket , voley, salsa, zumba, folklor} = req.body;
+
+    try {
+        const result:QueryResult = await pool.query(`SELECT gustos FROM usuarios WHERE id = $1`, [id]);
+        const idInfG = result.rows[0].gustos;
+        if (result.rowCount === 1) {
+            const result:QueryResult = await pool.query(`UPDATE gustos SET 
+            futbol = $1, basket = $2, voley = $3, salsa = $4, zumba = $5, folklor = $6
+            WHERE id_gustos = $7`, [futbol, basket , voley, salsa, zumba, folklor, idInfG]);
+
+            if (result.rowCount > 0) {
+                return res.status(201).send({message: 'Los cambios han sido correctos!'})
+            }
+            return res.status(400).send({message: 'No se han cambiado los cambios'})
+        }
+        return res.status(400).send({message: 'Usuario no encontrado'});
+    } catch (error) {
+        return res.status(500).send({message: error});
+    }
+}

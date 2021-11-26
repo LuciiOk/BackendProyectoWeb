@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePreferencia = exports.getPreferencias = void 0;
+exports.updatePreferencia = exports.deletePreferencia = exports.getPreferencias = void 0;
 const db_config_1 = require("../config/db_config");
 const getPreferencias = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
@@ -42,3 +42,25 @@ const deletePreferencia = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.deletePreferencia = deletePreferencia;
+const updatePreferencia = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    let { futbol, basket, voley, salsa, zumba, folklor } = req.body;
+    try {
+        const result = yield db_config_1.pool.query(`SELECT gustos FROM usuarios WHERE id = $1`, [id]);
+        const idInfG = result.rows[0].gustos;
+        if (result.rowCount === 1) {
+            const result = yield db_config_1.pool.query(`UPDATE gustos SET 
+            futbol = $1, basket = $2, voley = $3, salsa = $4, zumba = $5, folklor = $6
+            WHERE id_gustos = $7`, [futbol, basket, voley, salsa, zumba, folklor, idInfG]);
+            if (result.rowCount > 0) {
+                return res.status(201).send({ message: 'Los cambios han sido correctos!' });
+            }
+            return res.status(400).send({ message: 'No se han cambiado los cambios' });
+        }
+        return res.status(400).send({ message: 'Usuario no encontrado' });
+    }
+    catch (error) {
+        return res.status(500).send({ message: error });
+    }
+});
+exports.updatePreferencia = updatePreferencia;
