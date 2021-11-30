@@ -17,7 +17,7 @@ export const addAmigo = async (req:Request, res:Response):Promise<Response> => {
 
     try {
         const response:QueryResult = await pool.query(`INSERT INTO amigos(id_usuario, nombre, genero) VALUES($1, $2, $3) `, [id_usuario, nombre, genero]);
-        return res.status(200).json({message: 'El amigo ha sido agregado con exito'});
+        return res.status(201).json({message: 'El amigo ha sido agregado con exito'});
     } catch (error) {
         return res.status(500).json({message: error});
     }

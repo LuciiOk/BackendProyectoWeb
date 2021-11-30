@@ -28,7 +28,7 @@ export const deleteFicha = async (req:Request, res:Response):Promise<Response> =
                 return res.status(200).send({message: 'Ficha Eliminada.'});
             }
         }
-        return res.status(200).send({message: 'Usuario no encontrado.'})
+        return res.status(404).send({message: 'Usuario no encontrado.'})
     } catch (error) {
         return res.status(500).send({message: error})
     }
@@ -47,11 +47,11 @@ export const updateFicha = async (req:Request, res:Response) => {
             WHERE id = $8`, [estatura, peso, enfcardiaca, alergia, enfrespiratorias, cirugia, enfdegenerativa, idInf]);
 
             if (result.rowCount > 0) {
-                return res.status(201).send({message: 'Los cambios han sido correctos!'})
+                return res.status(200).send({message: 'Los cambios han sido correctos!'})
             }
-            return res.status(400).send({message: 'No se han cambiado los cambios'})
+            return res.status(404).send({message: 'No se han cambiado los cambios'})
         }
-        return res.status(400).send({message: 'Usuario no encontrado'});
+        return res.status(404).send({message: 'Usuario no encontrado'});
     } catch (error) {
         return res.status(500).send({message: error});
     }

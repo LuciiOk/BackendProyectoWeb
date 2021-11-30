@@ -8,7 +8,7 @@ export const getPreferencias = async (req:Request, res:Response):Promise<Respons
     try {   
         const result:QueryResult = await pool.query(`SELECT gustos.* FROM usuarios 
         INNER JOIN gustos on usuarios.gustos = gustos.id_gustos WHERE usuarios.id = $1`, [id]);
-        return res.status(201).send(result.rows[0])
+        return res.status(200).send(result.rows[0])
     } catch (error) {
         return res.status(500).send({message: error})
     }
@@ -30,7 +30,7 @@ export const deletePreferencia = async (req:Request, res:Response):Promise<Respo
             }
             return res.send({message: 'gusto no eliminado'})
         }
-        return res.status(200).send({message: 'Usuario no encontrado.'})
+        return res.status(403).send({message: 'Usuario no encontrado.'})
     } catch (error) {
         return res.status(500).send({message: error});
     } 
@@ -49,11 +49,11 @@ export const updatePreferencia = async (req:Request, res:Response) => {
             WHERE id_gustos = $7`, [futbol, basket , voley, salsa, zumba, folklor, idInfG]);
 
             if (result.rowCount > 0) {
-                return res.status(201).send({message: 'Los cambios han sido correctos!'})
+                return res.status(200).send({message: 'Los cambios han sido correctos!'})
             }
-            return res.status(400).send({message: 'No se han cambiado los cambios'})
+            return res.status(403).send({message: 'No se han cambiado los cambios'})
         }
-        return res.status(400).send({message: 'Usuario no encontrado'});
+        return res.status(404).send({message: 'Usuario no encontrado'});
     } catch (error) {
         return res.status(500).send({message: error});
     }

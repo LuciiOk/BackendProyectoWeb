@@ -16,7 +16,7 @@ export const registrar = async (req:Request, res:Response):Promise<Response>  =>
         let hashedPass = await bcrypt.hash(password, 10);
 
         const result:QueryResult = await pool.query(`SELECT * FROM usuarios WHERE email = $1`, [email]);
-        console.log(result)
+        console.log(result)                                                           
         if (result.rowCount === 0 ) {
             const result2:QueryResult = await pool.query(`INSERT INTO usuarios(nombre, email, password, genero, fechaNacimiento)
              VALUES($1,$2,$3,$4,$5) RETURNING id`, [nombre, email, hashedPass, genero, fechanacimiento]);
@@ -34,9 +34,9 @@ export const registrar = async (req:Request, res:Response):Promise<Response>  =>
             let idG = gustosResult.rows[0].id_gustos;
 
             let update = await pool.query(`UPDATE usuarios set informacionmedica = $1, gustos = $2 WHERE id = $3`, [idF, idG, idUsuario]);
-            return res.status(200).send({message: 'El usuario ha sido creado con exito!'})
+            return res.status(201).send({message: 'El usuario ha sido creado con exito!'})
         }
-        return res.status(400).send({message: 'El email ya existe'});
+        return res.status(403).send({message: 'El email ya existe'});
     } catch (error) {
         return res.status(500).send({message: error});
     }
